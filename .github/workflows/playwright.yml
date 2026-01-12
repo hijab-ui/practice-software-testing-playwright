@@ -34,7 +34,7 @@ jobs:
       - name: Verify JUnit report
         if: always()
         run: |
-          if [ -f test-results/junit-report.xml ]; then
+          if [ -f test-results/junit-report.xml ]; thengit status
             echo "JUnit report generated successfully."
           else
             echo "JUnit report not found. There might be an issue with report generation."
