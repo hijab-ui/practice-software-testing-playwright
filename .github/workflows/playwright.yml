@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Ensure test-results directory exists
         run: mkdir -p test-results
 
