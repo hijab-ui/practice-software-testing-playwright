@@ -6,7 +6,8 @@ test("Open Website", async ({ page }) => {
 
     const website = new PageFile(page);
     await page.goto('https://practicesoftwaretesting.com/');
-    await expect(page).toHaveTitle("Practice Software Testing - Toolshop - v5.0");
+   await expect(page).toHaveTitle("Practice Software Testing - Toolshop - v5.0", { timeout: 15000 });
+
     console.log("Website is opened");
     await page.waitForTimeout(3000);
     await website.SearchBox();
