@@ -40,5 +40,6 @@ jobs:
             echo "JUnit report not found. There might be an issue with report generation."
             exit 1
           fi
+
       - name: Check if JUnit Report exists
         run: ls -la test-results

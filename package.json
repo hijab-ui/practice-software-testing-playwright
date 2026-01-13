@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "Demo1": "npx playwright test tests/Website.spec.js --project chromium --headed" 
-   
+    "Demo1": "npx playwright test tests/Website.spec.js --project chromium --headed"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.43.1",
+    "@playwright/test": "^1.57.0",
     "@types/node": "^20.12.7"
   }
 }
