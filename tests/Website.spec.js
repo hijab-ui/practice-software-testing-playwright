@@ -1,23 +1,45 @@
-// ...existing code...
 import { test, expect } from '@playwright/test';
 import PageFile from '../PageObjectModelDemoPageFile/PageFile.js';
+import testData from '../dataFile/testData.json'; 
 
-test("Open Website", async ({ page }) => {
+let website;
 
-    const website = new PageFile(page);
-    await page.goto('https://practicesoftwaretesting.com/');
-   //await expect(page).toHaveTitle("Practice Software Testing - Toolshop - v5.0", { timeout: 15000 });
-
-    console.log("Website is opened");
-    await page.waitForTimeout(3000);
-    await website.SearchBox();
-    await page.waitForTimeout(2000);
-    await website.fillSearchBox("pliers");
-    await page.waitForTimeout(2000);
-    await website.pressEvent('keyboard', 'Enter');
-    await page.waitForTimeout(5000);
-    await expect(website.ResultsText).toHaveText('pliers');
-    console.log("Search results are displayed");
-
+test.beforeEach(async ({ page }) => {
+  website = new PageFile(page);
+  await page.goto(testData.website.url);
 });
-// ...existing code...
+
+test("Check Title of the Website", async ({ page }) => {
+  await expect(page).toHaveTitle(testData.website.title, { timeout: 15000 });
+  console.log("Title is verified");
+});
+
+test("Check URL of the Website", async ({ page }) => {
+  await expect(page).toHaveURL(testData.website.url);
+  console.log("URL is verified");
+});
+
+test("Find and Text in Search Box", async ({ page }) => {
+  await website.SearchBox();
+  await website.fillSearchBox(testData.search.text);
+  await website.pressEvent('keyboard', 'Enter');
+  await page.waitForTimeout(2000);
+  await expect(website.ResultsText).toHaveText(testData.search.expectedResult);
+  console.log("Search results are displayed");
+});
+
+
+test.only('Select nested checkbox using fieldset', async ({ page }) => {
+
+  await website.selectNestedCheckbox(
+    testData.filters.parent,
+    testData.filters.child
+  );
+
+  // Assertion (optional but recommended)
+  const selectedCheckbox = page
+    .locator('label', { hasText: testData.filters.child })
+    .locator('input');
+
+  await expect(selectedCheckbox).toBeChecked();
+});

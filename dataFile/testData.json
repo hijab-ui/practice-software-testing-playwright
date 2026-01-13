@@ -1,0 +1,16 @@
+{
+  "website": {
+    "url": "https://practicesoftwaretesting.com/",
+    "title": "Practice Software Testing - Toolshop - v5.0"
+  },
+  "search": {
+    "text": "pliers",
+    "expectedResult": "pliers"
+  },
+  "filters": {
+    "parent": "Hand Tools",
+    "child": "Pliers"
+  }
+
+
+}

@@ -1,32 +1,50 @@
+class PageFile {
+  constructor(page) {
+    this.page = page;
 
-class PageFile{
-    constructor(page) {
-        this.page = page;
-        
-       // this.clickSlider = page.getByXPath('//ngx-slider[@class ="ngx-slider animate"]');
-       this.ResultsText = page.locator('//span[@data-test ="search-term"]'); 
-       this.SearchEditBox = page.locator('//input[@placeholder ="Search"]');
-      
+    // Static elements ONLY
+    this.ResultsText = page.locator('span[data-test="search-term"]');
+    this.SearchEditBox = page.locator('input[placeholder="Search"]');
+  }
+
+  async SearchBox() {
+    await this.SearchEditBox.click();
+  }
+
+  async fillSearchBox(text) {
+    await this.SearchEditBox.fill(text);
+  }
+
+  async pressEvent(element, key) {
+    if (element === 'keyboard') {
+      await this.page.keyboard.press(key);
     }
+  }
 
-    async ClickSlider() {
-        await this.clickSlider.click();
-    }
+  // ✅ Dynamic logic goes here
+  async selectNestedCheckbox(parentText, childText) {
 
-    async SearchBox() {
-        await this.SearchEditBox.click();
-    }
+    // 1️⃣ Scope to correct fieldset
+    const categoryFieldset = this.page
+      .locator('fieldset')
+      .filter({ hasText: parentText });
 
-   async fillSearchBox(text) {  
-        await this.SearchEditBox.fill(text);
-    }
+    await categoryFieldset.first().waitFor({ state: 'visible' });
 
-    async pressEvent(element, key) {
-        if (element === 'keyboard') {
-            await this.page.keyboard.press(key);
-        }
-    }   
- 
+    // 2️⃣ Parent checkbox
+    const parentCheckbox = categoryFieldset
+      .locator('label', { hasText: parentText })
+      .locator('input[type="checkbox"]');
+
+    await parentCheckbox.check();
+
+    // 3️⃣ Child checkbox inside same fieldset
+    const childCheckbox = categoryFieldset
+      .locator('label', { hasText: childText })
+      .locator('input[type="checkbox"]');
+
+    await childCheckbox.check();
+  }
 }
 
 export default PageFile;
