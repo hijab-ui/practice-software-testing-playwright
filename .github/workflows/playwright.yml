@@ -19,7 +19,7 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Ensure test-results directory exists
         run: mkdir -p test-results
@@ -27,25 +27,24 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright in virtual display
+      - name: Run Playwright tests in virtual display
+        # Keep failures visible but still generate JUnit report
         run: |
-          xvfb-run npx playwright test --project=chromium || true
+          mkdir -p test-results
+          xvfb-run npx playwright test --project=chromium --reporter="junit:test-results/junit-report.xml" || true
+
+      - name: List test-results folder
+        run: ls -la test-results || true
 
       - name: Verify JUnit report
-        if: always()
         run: |
-          echo "Listing test-results directory:"
-          ls -la test-results || true
-
           if [ -f test-results/junit-report.xml ]; then
             echo "✅ JUnit report generated successfully."
           else
             echo "⚠️ JUnit report not found."
           fi
-        # No 'exit 1' → job will not fail
 
       - name: Upload JUnit Report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: junit-report
