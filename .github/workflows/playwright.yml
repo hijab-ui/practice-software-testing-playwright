@@ -28,10 +28,8 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests in virtual display
-        # Keep failures visible but still generate JUnit report
-        run: |
-          mkdir -p test-results
-          xvfb-run npx playwright test --project=chromium --reporter="junit:test-results/junit-report.xml" || true
+        # Uses the config reporter for JUnit; keeps workflow from stopping if tests fail
+        run: xvfb-run npx playwright test --project=chromium || true
 
       - name: List test-results folder
         run: ls -la test-results || true
@@ -41,7 +39,7 @@ jobs:
           if [ -f test-results/junit-report.xml ]; then
             echo "✅ JUnit report generated successfully."
           else
-            echo "⚠️ JUnit report not found."
+            echo "⚠️ JUnit report not found. Make sure your playwright.config.js has the JUnit reporter configured."
           fi
 
       - name: Upload JUnit Report
