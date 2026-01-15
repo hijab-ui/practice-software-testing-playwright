@@ -29,8 +29,7 @@ jobs:
 
       - name: Run Playwright in virtual display
         run: |
-          xvfb-run npx playwright test --project=chromium --reporter=junit || true
-        # '|| true' ensures Playwright failing doesn't fail the job
+          xvfb-run npx playwright test --project=chromium || true
 
       - name: Verify JUnit report
         if: always()
