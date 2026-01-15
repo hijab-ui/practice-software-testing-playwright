@@ -37,14 +37,16 @@ class PageFile {
       .locator('input[type="checkbox"]');
 
     await parentCheckbox.check();
+const childContainer = parentLabel.locator('xpath=following-sibling::div[1]');
 
-    // 3️⃣ Child checkbox inside same fieldset
-    const childCheckbox = categoryFieldset
-      .locator('label', { hasText: childText })
-      .locator('input[type="checkbox"]');
-
-    await childCheckbox.check();
+  // 4️⃣ Child checkbox INSIDE that container
+  const childCheckbox = childContainer
+    .locator('label.form-check', { hasText: childText })
+    .locator('input[type="checkbox"]');
+await childCheckbox.check();
   }
+
+
 }
 
 export default PageFile;

@@ -29,7 +29,7 @@ test("Find and Text in Search Box", async ({ page }) => {
 });
 
 
-test.only('Select nested checkbox using fieldset', async ({ page }) => {
+test('Select nested checkbox using fieldset', async ({ page }) => {
 
   await website.selectNestedCheckbox(
     testData.filters.parent,
